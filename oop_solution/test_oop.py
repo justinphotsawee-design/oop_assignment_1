@@ -1,113 +1,112 @@
-import sys, os
+import sys
+import os
+
+# Make Python see library_oop.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
-from library_oop import Book , Member , Library
+from library_oop import Book, Member, Library
 
-def test_book_class():
+
+def test_integration():
     print("=" * 60)
-    print("BOOK CLASS TEST - COMMIT #2")
-    print("=" * 60)
-
-    # Create Book
-    print("\n--- TEST 1: Creating Book ---")
-    b = Book(1, "Python Crash Course", "Eric Matthes", 3)
-    print(f"Created book: {b.title} by {b.author}")
-    print(f"Total copies: {b.total_copies}")
-    print(f"Available copies: {b.available_copies}")
-
-    # Borrow Book
-    print("\n--- TEST 2: Borrowing Books ---")
-    print("Borrow 1:", b.borrow())
-    print("Borrow 2:", b.borrow())
-    print("Borrow 3:", b.borrow())
-    print("Borrow when no copies left:", b.borrow()) 
-
-    # Return Book
-    print("\n--- TEST 3: Returning Books ---")
-    print("Return 1:", b.return_back())
-    print("Return 2:", b.return_back())
-    print("Return 3:", b.return_back())
-    print("Return when full:", b.return_back())      
-
-    print("\nFinal available copies:", b.available_copies)
-
-    print("\n" + "=" * 60)
-    print("BOOK CLASS TEST COMPLETE")
-    print("=" * 60)
-
-def test_member_class():
-    print("=" * 60)
-    print("MEMBER CLASS TEST - COMMIT #3")
-    print("=" * 60)
-
-    m = Member(101, "Alice", "alice@email.com")
-
-    print("\n--- TEST 1: Member Info ---")
-    print(m.id, m.name, m.email)
-
-    print("\n--- TEST 2: Borrow Books ---")
-    print("Borrow 1:", m.borrow_book(1))
-    print("Borrow 2:", m.borrow_book(2))
-    print("Borrow 3:", m.borrow_book(3))
-    print("Try Borrow 4 (should fail):", m.borrow_book(4))  
-
-    print("\n--- TEST 3: Returning Books ---")
-    print("Return 2:", m.return_book(2))
-    print("Return 4 (not borrowed):", m.return_book(4))
-
-    print("\nRemaining borrowed books:", m.borrowed_books)
-
-    print("=" * 60)
-    print("MEMBER TEST COMPLETE")
-    print("=" * 60)
-
-def test_library_class():
-    print("=" * 60)
-    print("LIBRARY CLASS TEST - COMMIT #4")
+    print("OOP LIBRARY MANAGEMENT SYSTEM - FULL INTEGRATION TEST (COMMIT #5)")
     print("=" * 60)
 
     lib = Library()
 
-    # Add books
+    # TEST 1: Add Books
+    print("\n--- TEST 1: Adding Books ---")
     lib.add_book(Book(1, "Python Crash Course", "Eric Matthes", 3))
     lib.add_book(Book(2, "Clean Code", "Robert Martin", 2))
     lib.add_book(Book(3, "The Pragmatic Programmer", "Hunt & Thomas", 1))
+    lib.add_book(Book(4, "Design Patterns", "Gang of Four", 2))
 
-    # Add members
-    lib.add_member(Member(101, "Alice", "alice@mail.com"))
-    lib.add_member(Member(102, "Bob", "bob@mail.com"))
+    # TEST 2: Add Members
+    print("\n--- TEST 2: Registering Members ---")
+    lib.add_member(Member(101, "Alice Smith", "alice@email.com"))
+    lib.add_member(Member(102, "Bob Jones", "bob@email.com"))
+    lib.add_member(Member(103, "Carol White", "carol@email.com"))
 
-    print("\n--- TEST: Display Books ---")
+    # TEST 3: Display Available Books
+    print("\n--- TEST 3: Display Available Books ---")
     lib.display_available_books()
 
-    print("\n--- TEST: Borrow Books ---")
-    lib.borrow(101, 1)
+    # TEST 4: Successful Borrowing
+    print("\n--- TEST 4: Successful Borrowing ---")
+    lib.borrow(101, 1)  
     lib.borrow(101, 2)
     lib.borrow(102, 1)
-    lib.borrow(102, 3)
-    lib.borrow(101, 3)  # Should fail (no copies)
 
-    print("\n--- TEST: Display Member Books ---")
+    # TEST 5: Member Books
+    print("\n--- TEST 5: Display Member Books ---")
     lib.display_member_books(101)
     lib.display_member_books(102)
+    lib.display_member_books(103)
 
-    print("\n--- TEST: Return Books ---")
+    # TEST 6: After Borrowing
+    print("\n--- TEST 6: Available Books After Borrowing ---")
+    lib.display_available_books()
+
+    # TEST 7: Borrow Last Copy
+    print("\n--- TEST 7: Borrow Last Copy ---")
+    lib.borrow(103, 3)  
+    lib.display_available_books()
+
+    # TEST 8: Borrow Unavailable Book
+    print("\n--- TEST 8: Attempt Borrow Unavailable ---")
+    lib.borrow(102, 3)
+
+    # TEST 9: Member Limit
+    print("\n--- TEST 9: Borrow Limit ---")
+    lib.borrow(101, 4)
+    lib.display_member_books(101)
+    lib.borrow(101, 3)  
+
+    # TEST 10: Return Books
+    print("\n--- TEST 10: Returning Books ---")
     lib.return_book(101, 1)
     lib.return_book(102, 1)
-    lib.return_book(102, 99)  # invalid
+    lib.display_member_books(101)
+    lib.display_available_books()
 
-    print("\n--- TEST: Error Handling ---")
+    # TEST 11: Return Invalid
+    print("\n--- TEST 11: Returning Invalid Book ---")
+    lib.return_book(102, 2)
+
+    # TEST 12: Return and Borrow Again
+    print("\n--- TEST 12: Return + Reborrow ---")
+    lib.return_book(103, 3)
+    lib.borrow(102, 3)
+    lib.display_member_books(102)
+
+    # TEST 13: Non-existent Inputs
+    print("\n--- TEST 13: Error Handling Cases ---")
     lib.borrow(999, 1)
     lib.borrow(101, 999)
     lib.return_book(999, 1)
+    lib.display_member_books(999)
 
-    print("=" * 60)
-    print("LIBRARY TEST COMPLETE")
+    # TEST 14: Final Status
+    print("\n--- TEST 14: Final Library Status ---")
+    print("\nAll Members and Their Books:")
+    for member_id, m in lib.members.items():
+        print(f"\n{m.name} ({m.id}):")
+        if not m.borrowed_books:
+            print("  (No books borrowed)")
+        else:
+            for book_id in m.borrowed_books:
+                b = lib.books.get(book_id)
+                if b:
+                    print(f"  - {b.title}")
+
+    print("\n=== Available Books at End ===")
+    lib.display_available_books()
+
+    print("\n" + "=" * 60)
+    print("INTEGRATION TEST COMPLETE")
     print("=" * 60)
 
 
 if __name__ == "__main__":
-    test_book_class()
-    test_member_class()
-    test_library_class()
+    test_integration()
