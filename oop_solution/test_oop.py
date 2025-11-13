@@ -1,7 +1,6 @@
 import sys
 import os
 
-# Make Python see library_oop.py
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
