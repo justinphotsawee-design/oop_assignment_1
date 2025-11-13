@@ -25,3 +25,30 @@ class Book:
             return False
         self.available_copies += 1
         return True
+
+class Member:
+    """Tracks a member's profile and which books they hold."""
+
+    MAX_BORROWED = 3
+
+    def __init__(self, member_id, name, email):
+        self.id = member_id
+        self.name = name
+        self.email = email
+        self.borrowed_books = []
+
+    def borrow_book(self, book_id):
+        """Register a borrowed book by id."""
+        if len(self.borrowed_books) >= Member.MAX_BORROWED:
+            return False
+        if book_id in self.borrowed_books:
+            return False
+        self.borrowed_books.append(book_id)
+        return True
+
+    def return_book(self, book_id):
+        """Remove a borrowed book when returned."""
+        if book_id not in self.borrowed_books:
+            return False
+        self.borrowed_books.remove(book_id)
+        return True
